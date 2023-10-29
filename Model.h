@@ -10,6 +10,7 @@ class Model : public QObject {
     Q_OBJECT
 public:
     explicit Model(QObject *parent = nullptr);
+    enum class Color {Red, Blue};
 
 public slots:
     /**
@@ -21,7 +22,7 @@ public slots:
      * @brief checkMove
      * @param currentColor
      */
-    void checkCurrentMove(QColor currentColor);
+    void checkCurrentMove(Color currentColor);
 
     /**
      * @brief addMove
@@ -49,12 +50,12 @@ signals:
     /**
      * @brief UpdateNextLevel
      */
-    void UpdateNextLevel(QVector<QColor>);
+    void UpdateNextLevel(QVector<Color>);
 
 private:
-    QVector<QColor> currentPattern;
+    QVector<Color> currentPattern;
     QTimer gameSpeed;
-    int index;
+    int currentIteration;
 };
 
 

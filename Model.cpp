@@ -1,7 +1,9 @@
 #include "Model.h"
 #include <QRandomGenerator>
 
-Model::Model(QObject *parent) : QObject(parent){}
+Model::Model(QObject *parent) : QObject(parent){
+
+}
 
 //*** TODO LIST ***
 // - Determine whether the speed of the game should be saved on model or view.
@@ -10,12 +12,11 @@ Model::Model(QObject *parent) : QObject(parent){}
 
 void Model::startGame(){
     //Sets everything to default and adds the initial color to the current pattern
-    currentPattern = currentPattern.empty();
-    gameSpeed = QTimer::setTimerType(Qt::PreciseTimer);
+    currentPattern.clear();
     currentIteration = 0;
     generateNextLevel();
 }
-void Model::checkCurrentMove(QColor currentColor){
+void Model::checkCurrentMove(Color currentColor){
     //Check if the current iteration of the player matches the current iteration of the current Pattern,
     //sending a gameover signal if it doesnt.
     if (currentIteration < currentPattern.size()){
@@ -26,27 +27,28 @@ void Model::checkCurrentMove(QColor currentColor){
     }
     else {
         currentIteration = 0;
-        generateNextLevel();
+        QTimer::singleShot(1000, this, &Model::generateNextLevel);
     }
-}
-
-void Model::generateNextLevel(){
-    //Adds a random color to the currentPattern, and sends signal to view to update.
-    QColor newColorIteration = randomColorGenerator();
-    currentPattern.append(newColorIteration);
-    emit UpdateNextLevel(currentPattern);
 }
 
 /**
  * @brief randomColorGenerator Helper method that generates a color randomly.
  * @return blue or red as a QColor.
  */
-QColor randomColorGenerator(){
+Model::Color randomColorGenerator(){
     int randomBinary = QRandomGenerator::global()->bounded(0,1);
     if (randomBinary == 0)
-        return Qt::red;
-    return Qt::blue;
+        return Model::Color::Red;
+    return Model::Color::Blue;
 }
+
+void Model::generateNextLevel(){
+    //Adds a random color to the currentPattern, and sends signal to view to update.
+    Model::Color newColorIteration = randomColorGenerator();
+    currentPattern.append(newColorIteration);
+    emit UpdateNextLevel(currentPattern);
+}
+
 
 void Model::increaseGameSpeed(){
     //Makes the QTimer smaller
