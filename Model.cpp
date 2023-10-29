@@ -1,5 +1,6 @@
 #include "Model.h"
 #include <QRandomGenerator>
+#include <iostream>
 
 Model::Model(QObject *parent) : QObject(parent){
 
@@ -16,9 +17,21 @@ void Model::startGame(){
     currentIteration = 0;
     generateNextLevel();
 }
+
+// Remove when done with debugging
+static std::string colorToString(Model::Color color) {
+    switch (color) {
+    case Model::Color::Red: return "Red";
+    case Model::Color::Blue: return "Blue";
+    // Add other colors if necessary
+    default: return "Unknown Color";
+    }
+}
+
 void Model::checkCurrentMove(Color currentColor){
     //Check if the current iteration of the player matches the current iteration of the current Pattern,
     //sending a gameover signal if it doesnt.
+    std::cout << "Current Color: " << colorToString(currentColor) << std::endl;
     if (currentIteration < currentPattern.size()){
         if (currentColor == currentPattern[currentIteration])
             currentIteration++;
@@ -42,11 +55,15 @@ Model::Color randomColorGenerator(){
     return Model::Color::Blue;
 }
 
+//void Model::showNextIteration(){
+
+//}
+
 void Model::generateNextLevel(){
     //Adds a random color to the currentPattern, and sends signal to view to update.
     Model::Color newColorIteration = randomColorGenerator();
     currentPattern.append(newColorIteration);
-    emit UpdateNextLevel(currentPattern);
+    //emit showNextIteration();
 }
 
 

@@ -48,9 +48,9 @@ signals:
     void succesfulPattern();
 
     /**
-     * @brief UpdateNextLevel
+     * @brief showNextIteration
      */
-    void UpdateNextLevel(QVector<Color>);
+    void showNextIteration();
 
 private:
     QVector<Color> currentPattern;

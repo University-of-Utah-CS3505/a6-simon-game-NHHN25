@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include <iostream>
 
 MainWindow::MainWindow(Model* model, QWidget *parent)
     : QMainWindow(parent)
@@ -12,6 +13,7 @@ MainWindow::MainWindow(Model* model, QWidget *parent)
     connect(ui->blueButton, &QPushButton::clicked, this, &MainWindow::blueButton_clicked);
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButton_clicked);
     connect(ui->nightmareModeCheckBox, &QCheckBox::toggled, this, &MainWindow::nightmareModeCheckBox_toggled);
+    connect(model, &Model::showNextIteration, this, &MainWindow::disableButtons);
 
     this->setStyleSheet(
         "QPushButton#redButton {"
@@ -48,17 +50,26 @@ MainWindow::~MainWindow()
 
 void MainWindow::redButton_clicked() {
     model->checkCurrentMove(Model::Color::Red);
+    std::cout << "Red button clicked" << std::endl;
 }
 
 void MainWindow::blueButton_clicked() {
     model->checkCurrentMove(Model::Color::Blue);
+    std::cout << "Blue button clicked" << std::endl;
 }
 
 void MainWindow::startButton_clicked() {
     model->startGame();
+    ui->startButton->setEnabled(false);
+    std::cout << "start button clicked" << std::endl;
 }
 
 void MainWindow::nightmareModeCheckBox_toggled(bool checked) {
     // TODO: Implement
+}
+
+void MainWindow::disableButtons(){
+    ui->redButton->setEnabled(false);
+    ui->blueButton->setEnabled(false);
 }
 
