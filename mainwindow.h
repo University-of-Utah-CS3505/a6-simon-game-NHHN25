@@ -23,6 +23,9 @@ public slots:
     void startButton_clicked();
     void nightmareModeCheckBox_toggled(bool checked);
     void disableButtons();
+    void enableButtons();
+    void lightUpBlue();
+    void lightUpRed();
 
 private:
     Ui::MainWindow *ui;

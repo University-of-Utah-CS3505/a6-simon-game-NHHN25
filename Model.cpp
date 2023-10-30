@@ -15,7 +15,9 @@ void Model::startGame(){
     //Sets everything to default and adds the initial color to the current pattern
     currentPattern.clear();
     currentIteration = 0;
+    gameSpeed = 1000;
     generateNextLevel();
+    showNextLevel();
 }
 
 // Remove when done with debugging
@@ -29,18 +31,18 @@ static std::string colorToString(Model::Color color) {
 }
 
 void Model::checkCurrentMove(Color currentColor){
-    //Check if the current iteration of the player matches the current iteration of the current Pattern,
-    //sending a gameover signal if it doesnt.
-    std::cout << "Current Color: " << colorToString(currentColor) << std::endl;
-    if (currentIteration < currentPattern.size()){
+    if (currentIteration < currentPattern.size() - 1){
         if (currentColor == currentPattern[currentIteration])
             currentIteration++;
         else
+            std::cout << "Game Over emitted" << std::endl;
             emit gameOver();
     }
     else {
         currentIteration = 0;
-        QTimer::singleShot(1000, this, &Model::generateNextLevel);
+        generateNextLevel();
+        increaseGameSpeed();
+        showNextLevel();
     }
 }
 
@@ -49,26 +51,44 @@ void Model::checkCurrentMove(Color currentColor){
  * @return blue or red as a QColor.
  */
 Model::Color randomColorGenerator(){
-    int randomBinary = QRandomGenerator::global()->bounded(0,1);
+    int randomBinary = QRandomGenerator::global()->bounded(0,2);
     if (randomBinary == 0)
         return Model::Color::Red;
     return Model::Color::Blue;
 }
 
-//void Model::showNextIteration(){
+void Model::showNextLevel(){
+    emit startPatternView();
+    int temp = gameSpeed;
+    for(Model::Color color : currentPattern){
+        std::cout<< "color emitted" << std::endl;
+        QTimer::singleShot(temp, this, [this, color]() { isRedOrBlue(color); });
+        temp += gameSpeed;
+    }
+    emit endPatternView();
+}
 
-//}
+void Model::isRedOrBlue(Color color){
+    if (color == Model::Color::Red){
+        std::cout<< "isRed emitted" << std::endl;
+        //emit isRed();
+    }
+    else{
+        std::cout<< "isBlue emitted" << std::endl;
+        //emit isBlue();
+    }
+}
+
 
 void Model::generateNextLevel(){
-    //Adds a random color to the currentPattern, and sends signal to view to update.
+    //Adds a random color to the currentPattern, and calls a method to show the next level.
     Model::Color newColorIteration = randomColorGenerator();
     currentPattern.append(newColorIteration);
-    //emit showNextIteration();
 }
 
 
 void Model::increaseGameSpeed(){
-    //Makes the QTimer smaller
+    gameSpeed -= 10;
 }
 
 
