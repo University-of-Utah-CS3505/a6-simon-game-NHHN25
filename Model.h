@@ -45,6 +45,11 @@ public slots:
      */
     void isRedOrBlue(Color);
 
+    /**
+     * @brief randomColorGenerator
+     */
+    Color randomColorGenerator();
+
 signals:
 
     /**

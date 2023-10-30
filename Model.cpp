@@ -20,17 +20,15 @@ void Model::startGame(){
     showNextLevel();
 }
 
-// Remove when done with debugging
-static std::string colorToString(Model::Color color) {
-    switch (color) {
-    case Model::Color::Red: return "Red";
-    case Model::Color::Blue: return "Blue";
-    // Add other colors if necessary
-    default: return "Unknown Color";
-    }
-}
-
 void Model::checkCurrentMove(Color currentColor){
+    //Edge-Case
+    if (currentPattern.size() == 1){
+        if (currentColor != currentPattern[0]){
+            emit gameOver();
+            return;
+        }
+    }
+
     if (currentIteration < currentPattern.size() - 1){
         if (currentColor == currentPattern[currentIteration]) {
             currentIteration++;
@@ -38,11 +36,12 @@ void Model::checkCurrentMove(Color currentColor){
             emit updateProgressBar(progressPercentage);
         }
         else {
-            std::cout << "Game Over emitted" << std::endl;
             emit gameOver();
+            return;
         }
     }
     else {
+
         currentIteration = 0;
         generateNextLevel();
         increaseGameSpeed();
@@ -50,11 +49,7 @@ void Model::checkCurrentMove(Color currentColor){
     }
 }
 
-/**
- * @brief randomColorGenerator Helper method that generates a color randomly.
- * @return blue or red as a QColor.
- */
-Model::Color randomColorGenerator(){
+Model::Color Model::randomColorGenerator(){
     int randomBinary = QRandomGenerator::global()->bounded(0,2);
     if (randomBinary == 0)
         return Model::Color::Red;
@@ -66,7 +61,6 @@ void Model::showNextLevel(){
     int temp = gameSpeed;
     for(int i = 0; i < currentPattern.size(); i++){
         Model::Color color = currentPattern[i];
-        std::cout<< "color emitted" << std::endl;
         QTimer::singleShot(temp, this, [this, color, i]() {
 
             isRedOrBlue(color);
@@ -76,24 +70,20 @@ void Model::showNextLevel(){
         });
         temp += gameSpeed;
     }
-
-
 }
 
 void Model::isRedOrBlue(Color color){
     if (color == Model::Color::Red){
-        std::cout<< "isRed emitted" << std::endl;
         emit isRed();
     }
     else{
-        std::cout<< "isBlue emitted" << std::endl;
         emit isBlue();
     }
 }
 
 
 void Model::generateNextLevel(){
-    //Adds a random color to the currentPattern, and calls a method to show the next level.
+    //Adds a random color to the currentPattern
     Model::Color newColorIteration = randomColorGenerator();
     currentPattern.append(newColorIteration);
 }
