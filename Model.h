@@ -72,6 +72,8 @@ signals:
      */
     void isBlue();
 
+    void updateProgressBar(int);
+
 private:
     QVector<Color> currentPattern;
     int gameSpeed;

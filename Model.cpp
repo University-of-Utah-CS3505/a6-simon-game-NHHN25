@@ -32,11 +32,15 @@ static std::string colorToString(Model::Color color) {
 
 void Model::checkCurrentMove(Color currentColor){
     if (currentIteration < currentPattern.size() - 1){
-        if (currentColor == currentPattern[currentIteration])
+        if (currentColor == currentPattern[currentIteration]) {
             currentIteration++;
-        else
+            int progressPercentage = (currentIteration *100) / currentPattern.size();
+            emit updateProgressBar(progressPercentage);
+        }
+        else {
             std::cout << "Game Over emitted" << std::endl;
             emit gameOver();
+        }
     }
     else {
         currentIteration = 0;
@@ -60,22 +64,30 @@ Model::Color randomColorGenerator(){
 void Model::showNextLevel(){
     emit startPatternView();
     int temp = gameSpeed;
-    for(Model::Color color : currentPattern){
+    for(int i = 0; i < currentPattern.size(); i++){
+        Model::Color color = currentPattern[i];
         std::cout<< "color emitted" << std::endl;
-        QTimer::singleShot(temp, this, [this, color]() { isRedOrBlue(color); });
+        QTimer::singleShot(temp, this, [this, color, i]() {
+
+            isRedOrBlue(color);
+
+            if(i == currentPattern.size() - 1) emit endPatternView();
+
+        });
         temp += gameSpeed;
     }
-    emit endPatternView();
+
+
 }
 
 void Model::isRedOrBlue(Color color){
     if (color == Model::Color::Red){
         std::cout<< "isRed emitted" << std::endl;
-        //emit isRed();
+        emit isRed();
     }
     else{
         std::cout<< "isBlue emitted" << std::endl;
-        //emit isBlue();
+        emit isBlue();
     }
 }
 
@@ -88,7 +100,7 @@ void Model::generateNextLevel(){
 
 
 void Model::increaseGameSpeed(){
-    gameSpeed -= 10;
+    gameSpeed = 2000/currentPattern.size();
 }
 
 

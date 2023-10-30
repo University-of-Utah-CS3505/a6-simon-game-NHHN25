@@ -2,7 +2,6 @@
 #define MAINWINDOW_H
 
 #include "Model.h"
-
 #include <QMainWindow>
 
 QT_BEGIN_NAMESPACE
@@ -26,9 +25,13 @@ public slots:
     void enableButtons();
     void lightUpBlue();
     void lightUpRed();
+    void updateProgress(int progressPercentage);
+    void displayGameOver();
 
 private:
     Ui::MainWindow *ui;
-    Model* model;
+    Model *model;
+    bool nightmareMode;
+    void initProgressBar();
 };
 #endif // MAINWINDOW_H
