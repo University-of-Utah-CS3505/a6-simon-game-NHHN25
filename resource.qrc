@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/img">
+        <file>img/clicked_blue.png</file>
+        <file>img/clicked_red.png</file>
+        <file>img/default_blue.png</file>
+        <file>img/default_red.png</file>
+        <file>img/djnormal.png</file>
+        <file>img/djopen.png</file>
+    </qresource>
+</RCC>

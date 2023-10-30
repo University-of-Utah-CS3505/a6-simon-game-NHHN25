@@ -20,12 +20,15 @@ HEADERS += \
 FORMS += \
     mainwindow.ui
 
+
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
-    sound/blueSFX.mp3 \
-    sound/redSFX.mp3 \
-    sound/screamSFX.mp3
+    img/djnormal.png \
+    img/djopen.png \
+
+RESOURCES += \
+    resource.qrc
