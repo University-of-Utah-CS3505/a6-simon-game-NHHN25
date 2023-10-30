@@ -8,12 +8,14 @@ MainWindow::MainWindow(Model* model, QWidget *parent)
 {
     ui->setupUi(this);
 
-
     connect(ui->redButton, &QPushButton::clicked, this, &MainWindow::redButton_clicked);
     connect(ui->blueButton, &QPushButton::clicked, this, &MainWindow::blueButton_clicked);
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButton_clicked);
     connect(ui->nightmareModeCheckBox, &QCheckBox::toggled, this, &MainWindow::nightmareModeCheckBox_toggled);
-    connect(model, &Model::showNextIteration, this, &MainWindow::disableButtons);
+    connect(model, &Model::startPatternView, this, &MainWindow::disableButtons);
+    connect(model, &Model::endPatternView, this, &MainWindow::enableButtons);
+    connect(model, &Model::isRed, this, &MainWindow::lightUpRed);
+    connect(model, &Model::isBlue, this, &MainWindow::lightUpBlue);
 
     this->setStyleSheet(
         "QPushButton#redButton {"
@@ -50,18 +52,18 @@ MainWindow::~MainWindow()
 
 void MainWindow::redButton_clicked() {
     model->checkCurrentMove(Model::Color::Red);
-    std::cout << "Red button clicked" << std::endl;
+    //std::cout << "Red button clicked" << std::endl;
 }
 
 void MainWindow::blueButton_clicked() {
     model->checkCurrentMove(Model::Color::Blue);
-    std::cout << "Blue button clicked" << std::endl;
+    //std::cout << "Blue button clicked" << std::endl;
 }
 
 void MainWindow::startButton_clicked() {
     model->startGame();
     ui->startButton->setEnabled(false);
-    std::cout << "start button clicked" << std::endl;
+    //std::cout << "start button clicked" << std::endl;
 }
 
 void MainWindow::nightmareModeCheckBox_toggled(bool checked) {
@@ -73,3 +75,15 @@ void MainWindow::disableButtons(){
     ui->blueButton->setEnabled(false);
 }
 
+void MainWindow::enableButtons(){
+    ui->redButton->setEnabled(true);
+    ui->blueButton->setEnabled(true);
+}
+
+void MainWindow::lightUpRed(){
+
+}
+
+void MainWindow::lightUpBlue(){
+
+}

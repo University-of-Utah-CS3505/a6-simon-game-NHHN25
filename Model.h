@@ -35,6 +35,16 @@ public slots:
      */
     void increaseGameSpeed();
 
+    /**
+     * @brief showNextLevel
+     */
+    void showNextLevel();
+
+    /**
+     * @brief isRedOrBlue
+     */
+    void isRedOrBlue(Color);
+
 signals:
 
     /**
@@ -43,18 +53,28 @@ signals:
     void gameOver();
 
     /**
-     * @brief succesfulPattern
+     * @brief startPatternView
      */
-    void succesfulPattern();
+    void startPatternView();
 
     /**
-     * @brief showNextIteration
+     * @brief endPatternView
      */
-    void showNextIteration();
+    void endPatternView();
+
+    /**
+     * @brief isRed
+     */
+    void isRed();
+
+    /**
+     * @brief isBlue
+     */
+    void isBlue();
 
 private:
     QVector<Color> currentPattern;
-    QTimer gameSpeed;
+    int gameSpeed;
     int currentIteration;
 };
 
