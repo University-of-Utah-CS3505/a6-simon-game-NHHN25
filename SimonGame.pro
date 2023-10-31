@@ -27,6 +27,7 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES += \
+    3505 Simon Game- NHHN25 and T-K-L.mp4 \
     img/djnormal.png \
     img/djopen.png \
 
