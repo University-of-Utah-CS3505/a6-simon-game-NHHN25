@@ -8,6 +8,8 @@ MainWindow::MainWindow(Model* model, QWidget *parent)
     , model(model)
 {
     ui->setupUi(this);
+
+    //Connection setup
     connect(ui->redButton, &QPushButton::clicked, this, &MainWindow::redButton_clicked);
     connect(ui->blueButton, &QPushButton::clicked, this, &MainWindow::blueButton_clicked);
     connect(ui->startButton, &QPushButton::clicked, this, &MainWindow::startButton_clicked);
@@ -19,9 +21,12 @@ MainWindow::MainWindow(Model* model, QWidget *parent)
     connect(model, &Model::updateProgressBar, this, &MainWindow::updateProgress);
     connect(model, &Model::gameOver, this, &MainWindow::displayGameOver);
 
+    //Initialize Main Window elements
     this->setStyleSheet("background-color: yellow;");
     this->setWindowTitle("Simon Game: Emoji");
     ui->gameOverLabel->setVisible(false);
+    ui->blueButton->setEnabled(false);
+    ui->redButton->setEnabled(false);
     initProgressBar();
 }
 
@@ -40,6 +45,7 @@ void MainWindow::displayGameOver(){
     ui->nightmareModeCheckBox->setEnabled(true);
     QString originalStyleSheet = ui->gameOverLabel->styleSheet();
 
+    // Handles special event for nightmare mode
     if(nightmareMode){
         QPixmap pixmap(":img/img/djopen.png");
         ui->gameOverLabel->setPixmap(pixmap);
@@ -55,6 +61,7 @@ void MainWindow::initProgressBar(){
 void MainWindow::redButton_clicked() {
     model->checkCurrentMove(Model::Color::Red);
 
+    // Handles special event for nightmare mode
     if(nightmareMode){
         QPoint bluePos = ui->blueButton->pos();
         ui->blueButton->move(ui->redButton->pos());
@@ -65,6 +72,7 @@ void MainWindow::redButton_clicked() {
 void MainWindow::blueButton_clicked() {
     model->checkCurrentMove(Model::Color::Blue);
 
+    // Handles special event for nightmare mode
     if(nightmareMode){
         QPoint bluePos = ui->blueButton->pos();
         ui->blueButton->move(ui->redButton->pos());
@@ -74,6 +82,8 @@ void MainWindow::blueButton_clicked() {
 
 void MainWindow::startButton_clicked() {
     model->startGame();
+    ui->blueButton->setEnabled(true);
+    ui->redButton->setEnabled(true);
     ui->startButton->setEnabled(false);
     ui->startButton->setVisible(false);
     ui->gameOverLabel->setVisible(false);
