@@ -8,11 +8,28 @@ QT_BEGIN_NAMESPACE
 namespace Ui { class MainWindow; }
 QT_END_NAMESPACE
 
+
+
+/**
+ * @authors Names: Nam Nguyen and Thomas Kuhrke Limia
+ * @authors GitHubs: NHHN25 and T-K-L
+ *
+ * @title Assignment 6: Qt Simon Game
+ *
+ * @brief The MainWindow class shows the user in a Graphical User Interface every visual element from the operations
+ * performed in model, and includes methods to manipulate said elements. "Simon Says" consists of the game showing
+ * a pattern, and the player replicating it, with the pattern getting longer the more patterns the player gets correctly.
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+    /**
+     * @brief MainWindow constructor.
+     * @param model a model object.
+     * @param parent a QWidget object.
+     */
     MainWindow(Model* model, QWidget *parent = nullptr);
     ~MainWindow();
 

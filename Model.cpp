@@ -1,18 +1,9 @@
 #include "Model.h"
 #include <QRandomGenerator>
-#include <iostream>
 
-Model::Model(QObject *parent) : QObject(parent){
-
-}
-
-//*** TODO LIST ***
-// - Determine whether the speed of the game should be saved on model or view.
-//      - Start it and implement it properly in model if that is decided.
-// - Implement the increaseGameSpeed Method.
+Model::Model(QObject *parent) : QObject(parent){}
 
 void Model::startGame(){
-    //Sets everything to default and adds the initial color to the current pattern
     currentPattern.clear();
     currentIteration = 0;
     gameSpeed = 1000;
@@ -30,18 +21,17 @@ void Model::checkCurrentMove(Color currentColor){
     }
 
     if (currentIteration < currentPattern.size() - 1){
-        if (currentColor == currentPattern[currentIteration]) {
+        if (currentColor == currentPattern[currentIteration]){
             currentIteration++;
             int progressPercentage = (currentIteration *100) / currentPattern.size();
             emit updateProgressBar(progressPercentage);
         }
-        else {
+        else{
             emit gameOver();
             return;
         }
     }
-    else {
-
+    else{
         currentIteration = 0;
         generateNextLevel();
         increaseGameSpeed();
@@ -59,14 +49,12 @@ Model::Color Model::randomColorGenerator(){
 void Model::showNextLevel(){
     emit startPatternView();
     int temp = gameSpeed;
-    for(int i = 0; i < currentPattern.size(); i++){
+    for(int i = 0; i < currentPattern.size(); i++) {
         Model::Color color = currentPattern[i];
         QTimer::singleShot(temp, this, [this, color, i]() {
-
             isRedOrBlue(color);
-
-            if(i == currentPattern.size() - 1) emit endPatternView();
-
+            if(i == currentPattern.size() - 1)
+                emit endPatternView();
         });
         temp += gameSpeed;
     }
@@ -83,7 +71,6 @@ void Model::isRedOrBlue(Color color){
 
 
 void Model::generateNextLevel(){
-    //Adds a random color to the currentPattern
     Model::Color newColorIteration = randomColorGenerator();
     currentPattern.append(newColorIteration);
 }
