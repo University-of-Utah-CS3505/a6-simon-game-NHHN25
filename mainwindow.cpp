@@ -38,6 +38,8 @@ MainWindow::~MainWindow()
 
 void MainWindow::displayGameOver(){
     ui->gameOverLabel->setVisible(true);
+    ui->blueButton->setEnabled(false);
+    ui->redButton->setEnabled(false);
     ui->startButton->setEnabled(true);
     ui->startButton->setVisible(true);
     ui->nightmareModeCheckBox->setVisible(true);
